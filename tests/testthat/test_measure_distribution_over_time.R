@@ -5,6 +5,13 @@ h <- c(h1, h2, h3)
 y <- c(rep(1999, 50), rep(2000, 50), rep(2001, 50))
 df <- data.frame(height = h, year = y)
 p <- measure_distribution_over_time(df, h, year)
+
+labels <- if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_labs(p)
+} else {
+  p$labels
+}
+
 test_that("Plot layers match expectations",{
   expect_is(p$layers[[1]], "ggproto")
 })
@@ -18,11 +25,11 @@ test_that("Plot uses correct data",{
 })
 
 test_that("x axis label is h",{
-  expect_match(p$labels$x, "h")
+  expect_match(labels$x, "h")
 })
 
 test_that("y axis is labeled 'count'",{
-  expect_match(p$labels$y, "count")
+  expect_match(labels$y, "count")
 })
 
 test_that("Facet type is correct", {

@@ -1,4 +1,11 @@
 p <- measure_distribution_by_two_categories(ggplot2::mpg, hwy, class, fl)
+
+labels <- if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_labs(p)
+} else {
+  p$labels
+}
+
 test_that("Plot layers match expectations",{
   expect_is(p$layers[[1]], "ggproto")
 })
@@ -12,11 +19,11 @@ test_that("Plot uses correct data",{
 })
 
 test_that("x axis label is hwy",{
-  expect_match(p$labels$x, "hwy")
+  expect_match(labels$x, "hwy")
 })
 
 test_that("y axis label is correct",{
-  expect_match(p$labels$y, "count")
+  expect_match(labels$y, "count")
 })
 
 test_that("Facet type is correct", {

@@ -1,6 +1,12 @@
 p <- measure_distribution(ggplot2::mpg, hwy)
 q <- measure_distribution(ggplot2::mpg, hwy, "hist")
 r <- measure_distribution(ggplot2::mpg, hwy, "box")
+
+get_labs <- function(x) x$labels
+if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  get_labs <- ggplot2::get_labs
+}
+
 test_that("Plot layers match expectations",{
   expect_is(p$layers[[1]], "ggproto")
   expect_is(q$layers[[1]], "ggproto")
@@ -20,15 +26,15 @@ test_that("Plot uses correct data",{
 })
 
 test_that("x axis label is hwy",{
-  expect_match(p$labels$x, "hwy")
-  expect_match(q$labels$x, "hwy")
-  expect_match(r$labels$x, "")
+  expect_match(get_labs(p)$x, "hwy")
+  expect_match(get_labs(q)$x, "hwy")
+  expect_match(get_labs(r)$x, "")
 })
 
 test_that("y axis label is correct",{
-  expect_match(p$labels$y, "count")
-  expect_match(q$labels$y, "count")
-  expect_match(r$labels$y, "hwy")
+  expect_match(get_labs(p)$y, "count")
+  expect_match(get_labs(q)$y, "count")
+  expect_match(get_labs(r)$y, "hwy")
 })
 
 test_that("Plot type is correct", {

@@ -1,4 +1,11 @@
 p <- category_tally(ggplot2::mpg, class)
+
+labels <- if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_labs(p)
+} else {
+  p$labels
+}
+
 test_that("Plot layers match expectations",{
   expect_is(p$layers[[1]], "ggproto")
 })
@@ -12,11 +19,11 @@ test_that("Plot uses correct data",{
 })
 
 test_that("x axis is labeled 'class'",{
-  expect_match(p$labels$x, "class")
+  expect_match(labels$x, "class")
 })
 
 test_that("y axis is labeled 'count'",{
-  expect_match(p$labels$y, "count")
+  expect_match(labels$y, "count")
 })
 
 

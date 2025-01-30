@@ -1,4 +1,11 @@
 p <- two_measures_relationship(ggplot2::mpg, displ, hwy, class)
+
+labels <- if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_labs(p)
+} else {
+  p$labels
+}
+
 test_that("Plot layers match expectations",{
   expect_is(p$layers[[1]], "ggproto")
 })
@@ -12,11 +19,11 @@ test_that("Plot uses correct data",{
 })
 
 test_that("x axis is labeled 'displ'",{
-  expect_match(p$labels$x, "displ")
+  expect_match(labels$x, "displ")
 })
 
 test_that("y axis is labeled 'hwy'",{
-  expect_match(p$labels$y, "hwy")
+  expect_match(labels$y, "hwy")
 })
 
 
